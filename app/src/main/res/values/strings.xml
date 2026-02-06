@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="weather_title_format">%1$s - %2$s</string>
+    <string name="back">Back</string>
+    <string name="refresh">Refresh</string>
+    <string name="date_format">EEEE, MMMM d</string>
+    <string name="temperature_format">%d°F</string>
+    <string name="high">High</string>
+    <string name="low">Low</string>
+    <string name="humidity">Humidity</string>
+    <string name="percentage_format">%d%%</string>
+    <string name="wind">Wind</string>
+    <string name="wind_speed_format">%s mph</string>
+    <string name="search_for_a_city">Search for a City</string>
+    <string name="search_prompt">Enter a US city to check the weather.</string>
+    <string name="enter_city_label">Enter a US city</string>
+    <string name="search">Search</string>
+    <string name="city_empty_error">City cannot be empty.</string>
+</resources>
