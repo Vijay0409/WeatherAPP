@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.mphasis.weather.R
 import com.mphasis.weather.domain.model.WeatherInfo
@@ -30,13 +31,13 @@ fun WeatherScreen(
     viewModel: WeatherViewModel,
     onBack: () -> Unit
 ) {
-    val state by viewModel.weatherInfoState.collectAsState()
+    val weatherInfoState by viewModel.weatherInfoState.collectAsState()
 
     LaunchedEffect(city) {
         viewModel.loadWeather(city)
     }
 
-    val title = when (val s = state) {
+    val title = when (val s = weatherInfoState) {
         is UiState.Success -> stringResource(
             id = R.string.weather_title_format,
             city,
@@ -81,7 +82,7 @@ fun WeatherScreen(
                 .padding(paddingValues)
                 .padding(screenPadding)
         ) {
-            when (val s = state) {
+            when (val s = weatherInfoState) {
                 is UiState.Loading, is UiState.Idle -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
@@ -97,8 +98,8 @@ fun WeatherScreen(
                     }
                 }
                 is UiState.Success -> {
-                    // Main success UI is now in its own composable
-                    WeatherSuccessContent(data = s.data)
+
+                    WeatherSuccessContent(weatherInfoData = s.data)
                 }
             }
         }
@@ -106,27 +107,32 @@ fun WeatherScreen(
 }
 
 @Composable
-private fun WeatherSuccessContent(data: WeatherInfo) {
+private fun WeatherSuccessContent(weatherInfoData: WeatherInfo) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
-        val dateFormat = stringResource(id = R.string.date_format)
-        val currentDate = remember {
-            LocalDate.now().format(DateTimeFormatter.ofPattern(dateFormat))
-        }
-
-        Text(
-            text = currentDate,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        DateDisplay()
 
         Spacer(modifier = Modifier.height(verticalSpacing))
 
-        // Using the new, reusable components
-        MainWeatherCard(weatherInfoData = data, modifier = Modifier.fillMaxWidth())
-        WeatherDetailsGrid(data = data)
+        MainWeatherCard(weatherInfoData = weatherInfoData, modifier = Modifier.fillMaxWidth())
+        WeatherDetailsGrid(weatherInfoData = weatherInfoData)
     }
+}
+
+@Composable
+private fun DateDisplay() {
+    val dateFormat = stringResource(id = R.string.date_format)
+    val currentDate = remember {
+        LocalDate.now().format(DateTimeFormatter.ofPattern(dateFormat))
+    }
+
+    Text(
+        text = currentDate,
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+    )
 }

@@ -62,7 +62,7 @@ fun MainWeatherCard(weatherInfoData: WeatherInfo, modifier: Modifier = Modifier)
 }
 
 @Composable
-fun WeatherDetailsGrid(data: WeatherInfo, modifier: Modifier = Modifier) {
+fun WeatherDetailsGrid(weatherInfoData: WeatherInfo, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -70,11 +70,11 @@ fun WeatherDetailsGrid(data: WeatherInfo, modifier: Modifier = Modifier) {
         ) {
             WeatherInfoDetailCard(
                 label = stringResource(R.string.high),
-                value = stringResource(id = R.string.temperature_format, data.tempMax.toInt())
+                value = stringResource(id = R.string.temperature_format, weatherInfoData.tempMax.toInt())
             )
             WeatherInfoDetailCard(
                 label = stringResource(R.string.low),
-                value = stringResource(id = R.string.temperature_format, data.tempMin.toInt())
+                value = stringResource(id = R.string.temperature_format, weatherInfoData.tempMin.toInt())
             )
         }
         Row(
@@ -83,11 +83,11 @@ fun WeatherDetailsGrid(data: WeatherInfo, modifier: Modifier = Modifier) {
         ) {
             WeatherInfoDetailCard(
                 label = stringResource(R.string.humidity),
-                value = stringResource(id = R.string.percentage_format, data.humidity)
+                value = stringResource(id = R.string.percentage_format, weatherInfoData.humidity)
             )
             WeatherInfoDetailCard(
                 label = stringResource(R.string.wind),
-                value = stringResource(id = R.string.wind_speed_format, data.windSpeed)
+                value = stringResource(id = R.string.wind_speed_format, weatherInfoData.windSpeed)
             )
         }
     }
