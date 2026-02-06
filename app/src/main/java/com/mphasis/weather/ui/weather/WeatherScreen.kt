@@ -1,4 +1,3 @@
-
 package com.mphasis.weather.ui.weather
 
 import androidx.compose.foundation.background
@@ -14,9 +13,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import coil.compose.AsyncImage
 import com.mphasis.weather.R
-import com.mphasis.weather.ui.theme.*
+import com.mphasis.weather.domain.model.WeatherInfo
+import com.mphasis.weather.ui.theme.LightCyan
+import com.mphasis.weather.ui.theme.SkyBlue
+import com.mphasis.weather.ui.theme.screenPadding
+import com.mphasis.weather.ui.theme.verticalSpacing
 import com.mphasis.weather.util.UiState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -28,7 +30,7 @@ fun WeatherScreen(
     viewModel: WeatherViewModel,
     onBack: () -> Unit
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.weatherInfoState.collectAsState()
 
     LaunchedEffect(city) {
         viewModel.loadWeather(city)
@@ -38,8 +40,7 @@ fun WeatherScreen(
         is UiState.Success -> stringResource(
             id = R.string.weather_title_format,
             city,
-            s.data.description.replaceFirstChar { it.uppercase() })
-
+            s.data.weatherDescription.replaceFirstChar { it.uppercase() })
         else -> city
     }
 
@@ -76,33 +77,18 @@ fun WeatherScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            SkyBlue,
-                            LightCyan
-                        )
-                    )
-                )
+                .background(Brush.verticalGradient(listOf(SkyBlue, LightCyan)))
                 .padding(paddingValues)
                 .padding(screenPadding)
         ) {
             when (val s = state) {
-                is UiState.Loading,
-                is UiState.Idle -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
+                is UiState.Loading, is UiState.Idle -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
-
                 is UiState.Error -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text(
                             text = s.message,
                             color = MaterialTheme.colorScheme.error,
@@ -110,75 +96,9 @@ fun WeatherScreen(
                         )
                     }
                 }
-
                 is UiState.Success -> {
-                    val data = s.data
-
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(verticalSpacing)
-                    ) {
-
-                        val dateFormat = stringResource(id = R.string.date_format)
-                        val currentDate = remember {
-                            LocalDate.now().format(
-                                DateTimeFormatter.ofPattern(dateFormat)
-                            )
-                        }
-
-                        Text(
-                            text = currentDate,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-
-                        Spacer(modifier = Modifier.height(verticalSpacing))
-
-                        Surface(
-                            shape = MaterialTheme.shapes.large,
-                            tonalElevation = cardElevation,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(screenPadding),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                AsyncImage(
-                                    model = "https://openweathermap.org/img/wn/${data.icon}@4x.png",
-                                    contentDescription = null,
-                                    modifier = Modifier.size(weatherIconSize)
-                                )
-
-                                Text(
-                                    text = stringResource(id = R.string.temperature_format, data.temperature.toInt()),
-                                    style = MaterialTheme.typography.displayLarge
-                                )
-
-                                Text(
-                                    text = data.description.replaceFirstChar { it.uppercase() },
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            }
-                        }
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            WeatherInfoDetail(stringResource(R.string.high), stringResource(id = R.string.temperature_format, data.tempMax.toInt()))
-                            WeatherInfoDetail(stringResource(R.string.low), stringResource(id = R.string.temperature_format, data.tempMin.toInt()))
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            WeatherInfoDetail(stringResource(R.string.humidity), stringResource(id = R.string.percentage_format, data.humidity))
-                            WeatherInfoDetail(stringResource(R.string.wind), stringResource(id = R.string.wind_speed_format, data.windSpeed))
-                        }
-                    }
+                    // Main success UI is now in its own composable
+                    WeatherSuccessContent(data = s.data)
                 }
             }
         }
@@ -186,19 +106,27 @@ fun WeatherScreen(
 }
 
 @Composable
-private fun WeatherInfoDetail(label: String, value: String) {
-    Card(
-        modifier = Modifier.padding(cardPadding),
-        elevation = CardDefaults.cardElevation(cardElevation)
+private fun WeatherSuccessContent(data: WeatherInfo) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(verticalSpacing)
     ) {
-        Column(
-            modifier = Modifier.padding(cardContentPadding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(text = label, style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(smallSpacerHeight))
-            Text(text = value, style = MaterialTheme.typography.bodyLarge)
+        val dateFormat = stringResource(id = R.string.date_format)
+        val currentDate = remember {
+            LocalDate.now().format(DateTimeFormatter.ofPattern(dateFormat))
         }
+
+        Text(
+            text = currentDate,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        Spacer(modifier = Modifier.height(verticalSpacing))
+
+        // Using the new, reusable components
+        MainWeatherCard(weatherInfoData = data, modifier = Modifier.fillMaxWidth())
+        WeatherDetailsGrid(data = data)
     }
 }

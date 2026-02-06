@@ -33,33 +33,33 @@ class SearchViewModelTest {
     @Test
     fun `init loads last city`() = runTest {
         val lastCity = "New York"
-        whenever(preferencesManager.lastCity).thenReturn(flowOf(lastCity))
+        whenever(preferencesManager.lastCheckedCity).thenReturn(flowOf(lastCity))
         val viewModel = SearchViewModel(preferencesManager)
         advanceUntilIdle()
-        assertEquals(lastCity, viewModel.city.value)
+        assertEquals(lastCity, viewModel.cityState.value)
     }
 
     @Test
     fun `onCityChange updates city value`() = runTest {
-        whenever(preferencesManager.lastCity).thenReturn(flowOf(""))
+        whenever(preferencesManager.lastCheckedCity).thenReturn(flowOf(""))
         val viewModel = SearchViewModel(preferencesManager)
         advanceUntilIdle()
         val newCity = "London"
         viewModel.onCityChange(newCity)
-        assertEquals(newCity, viewModel.city.value)
+        assertEquals(newCity, viewModel.cityState.value)
     }
 
     @Test
     fun `onSearchConfirmed triggers navigation and saves city`() = runTest {
-        whenever(preferencesManager.lastCity).thenReturn(flowOf(""))
+        whenever(preferencesManager.lastCheckedCity).thenReturn(flowOf(""))
         val viewModel = SearchViewModel(preferencesManager)
         advanceUntilIdle()
-        val city = "Paris"
+        val city = "Phoenix"
         viewModel.onCityChange(city)
         val onNavigateToWeather: (String) -> Unit = mock()
         viewModel.onSearchConfirmed(onNavigateToWeather)
         advanceUntilIdle()
         verify(onNavigateToWeather).invoke(city)
-        verify(preferencesManager).setLastCity(city)
+        verify(preferencesManager).setLastCheckedCity(city)
     }
 }

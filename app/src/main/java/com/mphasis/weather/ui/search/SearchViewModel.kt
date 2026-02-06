@@ -15,27 +15,27 @@ class SearchViewModel @Inject constructor(
     private val preferencesManager: PreferencesManager
 ) : ViewModel() {
 
-    private val _city = MutableStateFlow("")
-    val city: StateFlow<String> = _city
+    private val _cityState = MutableStateFlow("")
+    val cityState: StateFlow<String> = _cityState
 
     init {
         viewModelScope.launch {
-            val last = preferencesManager.lastCity.first()
+            val last = preferencesManager.lastCheckedCity.first()
             if (!last.isNullOrBlank()) {
-                _city.value = last
+                _cityState.value = last
             }
         }
     }
 
     fun onCityChange(value: String) {
-        _city.value = value
+        _cityState.value = value
     }
 
     fun onSearchConfirmed(onNavigate: (String) -> Unit) {
-        val current = _city.value.trim()
+        val current = _cityState.value.trim()
         if (current.isNotEmpty()) {
             viewModelScope.launch {
-                preferencesManager.setLastCity(current)
+                preferencesManager.setLastCheckedCity(current)
             }
             onNavigate(current)
         }

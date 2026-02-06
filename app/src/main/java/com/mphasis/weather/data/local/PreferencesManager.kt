@@ -3,6 +3,6 @@ package com.mphasis.weather.data.local
 import kotlinx.coroutines.flow.Flow
 
 interface PreferencesManager {
-    val lastCity: Flow<String?>
-    suspend fun setLastCity(city: String)
+    val lastCheckedCity: Flow<String?>
+    suspend fun setLastCheckedCity(city: String)
 }

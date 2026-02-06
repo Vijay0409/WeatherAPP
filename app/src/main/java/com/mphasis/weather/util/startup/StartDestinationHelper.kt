@@ -23,7 +23,7 @@ import com.mphasis.weather.data.local.PreferencesManager
 fun rememberStartDestinationState(preferencesManager: PreferencesManager): StartDestinationState {
     val context = LocalContext.current
     var state by remember { mutableStateOf<StartDestinationState>(StartDestinationState.Loading) }
-    val lastCity by preferencesManager.lastCity.collectAsState(initial = null)
+    val lastCity by preferencesManager.lastCheckedCity.collectAsState(initial = null)
 
     fun fetchLocationAndSetStart() {
         try {

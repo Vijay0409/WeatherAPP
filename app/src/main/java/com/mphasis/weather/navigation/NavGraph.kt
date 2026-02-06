@@ -1,22 +1,20 @@
 package com.mphasis.weather.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.compose.*
 import com.mphasis.weather.data.local.PreferencesManager
 import com.mphasis.weather.ui.search.SearchScreen
 import com.mphasis.weather.ui.search.SearchViewModel
 import com.mphasis.weather.ui.weather.WeatherScreen
 import com.mphasis.weather.ui.weather.WeatherViewModel
-import com.mphasis.weather.util.startup.StartDestinationState
-import com.mphasis.weather.util.startup.rememberStartDestinationState
+import com.mphasis.weather.util.startup.*
 
 @Composable
 fun WeatherNavGraph(

@@ -36,33 +36,33 @@ class WeatherViewModelTest {
 
     @Test
     fun `loadWeather success`() = runTest {
-        val city = "London"
+        val city = "abc"
         val weather = WeatherInfo(
-            city = "London",
+            cityName = "abc",
             temperature = 15.0,
             feelsLike = 14.0,
             tempMin = 10.0,
             tempMax = 20.0,
             humidity = 80,
             windSpeed = 5.0,
-            description = "Clear sky",
-            icon = "01d"
+            weatherDescription = "Clear sky",
+            weatherIcon = "01d"
         )
         whenever(getWeatherUseCase(city)).thenReturn(weather)
         viewModel.loadWeather(city)
         advanceUntilIdle()
-        val state = viewModel.state.first()
+        val state = viewModel.weatherInfoState.first()
         assertEquals(UiState.Success(weather), state)
     }
 
     @Test
     fun `loadWeather error`() = runTest {
-        val city = "London"
+        val city = "abc"
         val errorMessage = "Error fetching weather"
         whenever(getWeatherUseCase(city)).thenThrow(RuntimeException(errorMessage))
         viewModel.loadWeather(city)
         advanceUntilIdle()
-        val state = viewModel.state.first()
+        val state = viewModel.weatherInfoState.first()
         assertEquals(UiState.Error(errorMessage), state)
     }
 }

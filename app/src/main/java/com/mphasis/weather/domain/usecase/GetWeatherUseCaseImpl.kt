@@ -5,8 +5,8 @@ import com.mphasis.weather.domain.repository.WeatherRepository
 import javax.inject.Inject
 
 class GetWeatherUseCaseImpl @Inject constructor(
-    private val repository: WeatherRepository
+    private val weatherRepository: WeatherRepository
 ) : GetWeatherUseCase {
     override suspend operator fun invoke(city: String): WeatherInfo =
-        repository.getWeatherByCity(city)
+        weatherRepository.getWeatherByCity(city)
 }

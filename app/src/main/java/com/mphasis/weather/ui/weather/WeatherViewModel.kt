@@ -16,17 +16,17 @@ class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<UiState<WeatherInfo>>(UiState.Idle)
-    val state: StateFlow<UiState<WeatherInfo>> = _state
+    private val _weatherInfoState = MutableStateFlow<UiState<WeatherInfo>>(UiState.Idle)
+    val weatherInfoState: StateFlow<UiState<WeatherInfo>> = _weatherInfoState
 
     fun loadWeather(city: String) {
         viewModelScope.launch {
-            _state.value = UiState.Loading
+            _weatherInfoState.value = UiState.Loading
             try {
                 val result = getWeatherUseCase(city)
-                _state.value = UiState.Success(result)
+                _weatherInfoState.value = UiState.Success(result)
             } catch (e: Exception) {
-                _state.value = UiState.Error(e.message ?: "Unknown error")
+                _weatherInfoState.value = UiState.Error(e.message ?: "Unknown error")
             }
         }
     }

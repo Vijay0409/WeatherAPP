@@ -18,16 +18,16 @@ class PreferencesManagerImpl @Inject constructor(
 ) : PreferencesManager {
 
     private companion object {
-        val KEY_LAST_CITY = stringPreferencesKey("last_city")
+        val KEY_LAST_CHECKED_CITY = stringPreferencesKey("last_city")
     }
 
-    override val lastCity: Flow<String?> = context.dataStore.data.map { prefs ->
-        prefs[KEY_LAST_CITY]
+    override val lastCheckedCity: Flow<String?> = context.dataStore.data.map { prefs ->
+        prefs[KEY_LAST_CHECKED_CITY]
     }
 
-    override suspend fun setLastCity(city: String) {
+    override suspend fun setLastCheckedCity(city: String) {
         context.dataStore.edit { prefs ->
-            prefs[KEY_LAST_CITY] = city
+            prefs[KEY_LAST_CHECKED_CITY] = city
         }
     }
 }

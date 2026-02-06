@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Singleton
 class WeatherRepositoryImpl @Inject constructor(
-    private val api: WeatherApi
+    private val weatherApi: WeatherApi
 ) : WeatherRepository {
 
     override suspend fun getWeatherByCity(city: String): WeatherInfo {
-        val response = api.getWeatherByCity(
+        val response = weatherApi.getWeatherByCity(
             city = city,
             apiKey = Constants.API_KEY,
             units = Constants.UNITS

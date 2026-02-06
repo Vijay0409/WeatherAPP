@@ -18,7 +18,7 @@ fun SearchScreen(
     viewModel: SearchViewModel,
     onNavigateToWeather: (String) -> Unit
 ) {
-    val city by viewModel.city.collectAsState()
+    val city by viewModel.cityState.collectAsState()
     var isError by remember { mutableStateOf(false) }
 
     Column(

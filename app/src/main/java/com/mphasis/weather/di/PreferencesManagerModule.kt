@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ManagerModule {
+abstract class PreferencesManagerModule {
 
     @Binds
     abstract fun bindPreferencesManager(
