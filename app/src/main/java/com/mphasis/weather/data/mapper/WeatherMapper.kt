@@ -12,7 +12,7 @@ import com.mphasis.weather.domain.model.WeatherInfo
  * @return A [WeatherInfo] object suitable for use in the UI and business logic.
  */
 fun WeatherResponse.toDomain(): WeatherInfo {
-    val weatherDescription = weatherDescriptions.firstOrNull()
+    val weatherDescription = weatherDescriptions?.firstOrNull()
     return WeatherInfo(
         cityName = cityName.orEmpty(),
         temperature = temperatureData?.temp ?: 0.0,
