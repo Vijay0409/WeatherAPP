@@ -16,9 +16,9 @@ fun WeatherResponse.toDomain(): WeatherInfo {
     return WeatherInfo(
         cityName = cityName.orEmpty(),
         temperature = temperatureData?.temp ?: 0.0,
-        feelsLike = temperatureData?.feels_like ?: 0.0,
-        tempMax = temperatureData?.temp_max ?: 0.0,
-        tempMin = temperatureData?.temp_min ?: 0.0,
+        feelsLike = temperatureData?.feelsLike ?: 0.0,
+        tempMax = temperatureData?.tempMax ?: 0.0,
+        tempMin = temperatureData?.tempMin ?: 0.0,
         humidity = temperatureData?.humidity ?: 0,
         windSpeed = wind?.speed ?: 0.0,
         weatherDescription = weatherDescription?.weatherDescription.orEmpty(),

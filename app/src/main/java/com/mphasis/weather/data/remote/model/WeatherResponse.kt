@@ -34,13 +34,13 @@ data class TemperatureData(
     val temp: Double?,
 
     @SerializedName("feels_like")
-    val feels_like: Double?,
+    val feelsLike: Double?,
 
     @SerializedName("temp_min")
-    val temp_min: Double?,
+    val tempMin: Double?,
 
     @SerializedName("temp_max")
-    val temp_max: Double?,
+    val tempMax: Double?,
 
     @SerializedName("humidity")
     val humidity: Int?
