@@ -14,7 +14,8 @@ private val Context.dataStore by preferencesDataStore("weather_prefs")
 
 @Singleton
 class PreferencesManagerImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext
+    private val context: Context
 ) : PreferencesManager {
 
     private companion object {
