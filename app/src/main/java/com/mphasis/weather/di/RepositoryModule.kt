@@ -1,6 +1,8 @@
 package com.mphasis.weather.di
 
+import com.mphasis.weather.data.repository.WeatherHistoryRepositoryImpl
 import com.mphasis.weather.data.repository.WeatherRepositoryImpl
+import com.mphasis.weather.domain.repository.WeatherHistoryRepository
 import com.mphasis.weather.domain.repository.WeatherRepository
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindWeatherRepository(
         impl: WeatherRepositoryImpl
     ): WeatherRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherHistoryRepository(
+        impl: WeatherHistoryRepositoryImpl
+    ): WeatherHistoryRepository
 }
